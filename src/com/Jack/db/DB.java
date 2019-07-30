@@ -2,6 +2,7 @@ package com.Jack.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -42,13 +43,34 @@ public class DB {
 		}
 	}
 	
-	
+	public boolean authenticate(Connection conn, String email, String password) {
+		try {
+			Statement st = conn.createStatement();
+			ResultSet rs = st.executeQuery
+					("SELECT password FROM users WHERE email = '" + email + "'"); 
+			if(rs.next()) {
+				String pass = rs.getString("password");
+				return (pass.equals(password));
+			}
+			return false;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return false;
+	}
 	
 	
 	public static void main(String[] args) throws SQLException {
 		DB app = new DB();
 		Connection conn = app.connect();
 		app.createUser(conn, "jackbernstein@mail.com", "Jack", "Bernstein", "Password");
+		boolean auth = app.authenticate(conn, "jackbernstein@mail.com", "Password");
+		boolean wrong = app.authenticate(conn, "no email", "nothing");
+		System.out.println(auth);
+		System.out.println(wrong);
+		
 		conn.close();
 		
 	}
