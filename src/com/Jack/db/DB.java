@@ -1,11 +1,11 @@
-package main;
+package com.Jack.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class App {
+public class DB {
 	
 	private final String url = "jdbc:postgresql://localhost:5432/sample_db";
 	
@@ -42,10 +42,14 @@ public class App {
 		}
 	}
 	
+	
+	
+	
 	public static void main(String[] args) throws SQLException {
-		App app = new App();
+		DB app = new DB();
 		Connection conn = app.connect();
-		app.createUser(conn, "mymail@gmail.com", "My", "Name", "0000");
+		app.createUser(conn, "jackbernstein@mail.com", "Jack", "Bernstein", "Password");
+		conn.close();
 		
 	}
 
